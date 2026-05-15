@@ -70,8 +70,8 @@ function App() {
         const value = inputValue.trim();
         if (value) {
             setTasks((current) => [createTask(value), ...current]);
-            setInputValue('');
         }
+        setInputValue('');
     };
 
     const handleDeleteTask = (index) => {
