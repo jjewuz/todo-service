@@ -17,7 +17,7 @@ const TaskList = ({
         <div className="to-do__list">
             {tasks.map((task, index) => (
                 <TaskItem
-                    key={index}
+                    key={task.id ?? index}
                     task={task}
                     index={index}
                     editingId={editingId}

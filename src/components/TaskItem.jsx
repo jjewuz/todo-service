@@ -12,6 +12,8 @@ const TaskItem = ({
     handleDuplicateTask,
     handleDeleteTask
 }) => {
+    const title = typeof task === 'string' ? task : task.title;
+
     return (
         <div className="to-do__item">
             {editingId === index ? (
@@ -44,10 +46,10 @@ const TaskItem = ({
                 </>
             ) : (
                 <>
-                    <span className="to-do__item-text">{task}</span>
+                    <span className="to-do__item-text">{title}</span>
                     <button
                         className="to-do__item-button to-do__item-button_type_edit"
-                        onClick={() => handleEditStart(index, task)}
+                        onClick={() => handleEditStart(index, title)}
                         type="button"
                     >
                         ✎

@@ -1,16 +1,40 @@
 import { useState, useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import { STORAGE_KEY } from './constants';
 
-const STORAGE_KEY = 'tasks';
+const createId = () =>
+    typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+const createTask = (title) => ({
+    id: createId(),
+    title,
+    date: new Date().toISOString(),
+    done: false,
+});
+
+const normalizeTask = (task) => {
+    if (typeof task === 'string') {
+        return createTask(task);
+    }
+
+    return {
+        id: task?.id ?? createId(),
+        title: task?.title ?? String(task),
+        date: task?.date ?? new Date().toISOString(),
+        done: Boolean(task?.done),
+    };
+};
 
 const defaultItems = [
-    "Сделать проектную работу",
-    "Полить цветы",
-    "Пройти туториал по Реакту",
-    "Сделать фронт для своего проекта",
-    "Прогуляться по улице в солнечный день",
-    "Помыть посуду",
+    createTask('Сделать проектную работу'),
+    createTask('Полить цветы'),
+    createTask('Пройти туториал по Реакту'),
+    createTask('Сделать фронт для своего проекта'),
+    createTask('Прогуляться по улице в солнечный день'),
+    createTask('Помыть посуду'),
 ];
 
 function App() {
@@ -21,21 +45,31 @@ function App() {
 
     useEffect(() => {
         const data = localStorage.getItem(STORAGE_KEY);
-        const loadedTasks = data ? JSON.parse(data) : defaultItems;
-        setTasks(loadedTasks);
+        if (!data) {
+            setTasks(defaultItems);
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(data);
+            const loadedTasks = Array.isArray(parsed)
+                ? parsed.map(normalizeTask)
+                : defaultItems;
+            setTasks(loadedTasks);
+        } catch {
+            setTasks(defaultItems);
+        }
     }, []);
 
     useEffect(() => {
-        if (tasks.length > 0) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
     }, [tasks]);
 
     const handleAddTask = (e) => {
         e.preventDefault();
         const value = inputValue.trim();
         if (value) {
-            setTasks((current) => [value, ...current]);
+            setTasks((current) => [createTask(value), ...current]);
             setInputValue('');
         }
     };
@@ -45,7 +79,11 @@ function App() {
     };
 
     const handleDuplicateTask = (index) => {
-        setTasks((current) => [current[index], ...current]);
+        setTasks((current) => {
+            const target = current[index];
+            if (!target) return current;
+            return [{ ...target, id: createId() }, ...current];
+        });
     };
 
     const handleEditStart = (index, text) => {
@@ -56,7 +94,9 @@ function App() {
     const handleEditSave = (index) => {
         if (editingText.trim()) {
             setTasks((current) =>
-                current.map((task, i) => (i === index ? editingText.trim() : task))
+                current.map((task, i) =>
+                    i === index ? { ...task, title: editingText.trim() } : task
+                )
             );
         }
         setEditingId(null);
