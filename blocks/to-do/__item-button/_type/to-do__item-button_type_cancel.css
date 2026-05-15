@@ -1,0 +1,5 @@
+.to-do__item-button_type_cancel {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.28);
+}

@@ -1,0 +1,5 @@
+.to-do__item-button_type_delete {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.24);
+}

@@ -1,0 +1,13 @@
+.to-do__item-edit-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #2563eb;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.to-do__item-edit-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
