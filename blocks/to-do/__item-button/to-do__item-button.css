@@ -1,20 +1,11 @@
 .to-do__item-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  min-inline-size: 44px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  border-radius: 14px;
+  inline-size: 25px;
+  aspect-ratio: 1/1;
   cursor: pointer;
-  background-color: #f8fafc;
-  color: #374151;
-  font-weight: 700;
-  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.to-do__item-button:hover {
-  transform: translateY(-1px);
-  background-color: #eef2ff;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
 }
